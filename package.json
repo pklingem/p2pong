@@ -1,0 +1,18 @@
+{
+  "name": "p2pong",
+  "version": "0.0.0",
+  "description": "Peer to Peer Pong over WebRTC",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/articulate/p2pong.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/articulate/p2pong/issues"
+  },
+  "homepage": "https://github.com/articulate/p2pong#readme"
+}
