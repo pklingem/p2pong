@@ -9,7 +9,9 @@
     "watch": "parallelshell 'npm run watch:js' 'npm run watch:html'",
     "watch:js": "watchify client/index.js -o dist/bundle.js",
     "watch:html": "jade templates -w -o dist",
-    "server": "node server",
+    "server:signaling": "node server",
+    "server:assets": "http-server dist",
+    "server": "parallelshell 'npm run server:signaling' 'npm run server:assets'",
     "start": "parallelshell 'npm run watch' 'npm run server'"
   },
   "repository": {
@@ -28,6 +30,7 @@
   },
   "devDependencies": {
     "browserify": "^12.0.1",
+    "http-server": "^0.8.5",
     "jade": "^1.11.0",
     "parallelshell": "^2.0.0",
     "socket.io-p2p-server": "^1.2.0",
