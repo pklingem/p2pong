@@ -14,4 +14,4 @@ io.on('connection', function(socket){
 
 app.use(express.static('dist'));
 
-server.listen(3030);
+server.listen(process.env.PORT || 3030);
