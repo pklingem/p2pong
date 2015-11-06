@@ -5,7 +5,7 @@ var keys = { left: 37, right: 39 };
 var keysDown = {};
 var vmax = 4;
 
-peer.on('connected', addControls);
+peer.on('start', addControls);
 
 function addControls(conn) {
   window.addEventListener('keydown', keydown);

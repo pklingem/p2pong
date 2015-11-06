@@ -31,7 +31,7 @@ function connected(conn) {
   peer.connection = conn;
   if (!peer.player) peer.player = 'two';
   conn.on('data', emit);
-  peer.emit('connected', conn);
+  peer.emit('start', conn);
 }
 
 module.exports = peer;

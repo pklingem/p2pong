@@ -22,7 +22,7 @@ function Ball(context) {
   this.vx = 0;
   this.vy = 0;
 
-  peer.on('connected', this.start.bind(this));
+  peer.on('start', this.start.bind(this));
   peer.on('ball', this.autocorrect.bind(this));
 }
 
