@@ -1,6 +1,6 @@
 var Peer = require('peerjs');
 
-var peer   = new Peer({ key: '6vwzbeq89uo6flxr', debug: 1 });
+var peer = window.peer = new Peer({ key: '6vwzbeq89uo6flxr', debug: 1 });
 var socket = require('socket.io-client')();
 
 peer.on('connection', connected);
