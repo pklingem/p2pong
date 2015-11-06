@@ -6,13 +6,15 @@
   "scripts": {
     "build:js": "browserify client/index.js -o dist/bundle.js",
     "build:html": "jade templates -o dist",
+    "build": "parellelshell 'npm run build:js' 'npm run build:html'",
     "watch": "parallelshell 'npm run watch:js' 'npm run watch:html'",
     "watch:js": "watchify client/index.js -v -o dist/bundle.js",
     "watch:html": "jade templates -w -o dist",
     "server:signalling": "node server",
     "server:assets": "http-server dist",
     "server": "parallelshell 'npm run server:signalling' 'npm run server:assets'",
-    "start": "parallelshell 'npm run watch' 'npm run server'"
+    "start": "parallelshell 'npm run watch' 'npm run server'",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
