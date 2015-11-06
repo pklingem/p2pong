@@ -7,7 +7,7 @@ var Table     = require('./table');
 var table     = new Table(400, 600);
 var player    = new Player(table.context);
 var computer  = new Computer(table.context);
-var ball      = new Ball(table.context, 200, 300);
+var ball      = new Ball(table.context);
 
 var maxLag = 5000;
 var step   = 17;

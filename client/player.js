@@ -1,6 +1,9 @@
 var Paddle = require('./paddle');
 
+var keys = { left:  37, right: 39 };
 var keysDown = {};
+
+var vmax = 4;
 
 window.addEventListener("keydown", function(event) {
   keysDown[event.keyCode] = true;
@@ -15,16 +18,9 @@ function Player(context) {
 };
 
 Player.prototype.update = function() {
-  for(var key in keysDown) {
-    var value = Number(key);
-    if(value == 37) { // left arrow
-      this.paddle.move(-4, 0);
-    } else if (value == 39) { // right arrow
-      this.paddle.move(4, 0);
-    } else {
-      this.paddle.move(0, 0);
-    }
-  }
+  if (keys.left  in keysDown) return this.paddle.move(-vmax, 0);
+  if (keys.right in keysDown) return this.paddle.move( vmax, 0);
+  this.paddle.move(0, 0);
 };
 
 Player.prototype.render = function() {

@@ -1,25 +1,35 @@
 function Paddle(context, x, y, width, height) {
   this.context = context;
+  this.tableHeight = context.canvas.height;
+  this.tableWidth  = context.canvas.width;
   this.x = x;
   this.y = y;
   this.width = width;
   this.height = height;
-  this.x_speed = 0;
-  this.y_speed = 0;
+  this.vx = 0;
+  this.vy = 0;
 };
 
-Paddle.prototype.move = function(x, y) {
-  this.x += x;
-  this.y += y;
-  this.x_speed = x;
-  this.y_speed = y;
-  if(this.x < 0) { // all the way to the left
-    this.x = 0;
-    this.x_speed = 0;
-  } else if (this.x + this.width > 400) { // all the way to the right
-    this.x = 400 - this.width;
-    this.x_speed = 0;
+Paddle.prototype.move = function(vx, vy) {
+  this.vx = vx;
+  this.vy = vy;
+
+  var hitLeftWall  = this.x < 0;
+  var hitRightWall = this.x + this.width > this.tableWidth;
+
+  switch (true) {
+    case hitLeftWall:
+      this.x = 0;
+      this.vx = 0;
+      break;
+    case hitRightWall:
+      this.x = this.tableWidth - this.width;
+      this.vx = 0;
+      break;
   }
+
+  this.x += vx;
+  this.y += vy;
 };
 
 Paddle.prototype.render = function() {
