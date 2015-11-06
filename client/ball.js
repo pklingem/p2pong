@@ -21,7 +21,6 @@ function Ball(context) {
   this.y  = this.tableHeight / 2;
   this.vx = 0;
   this.vy = 0;
-  this.last = performance.now();
 
   peer.on('connected', this.start.bind(this));
   peer.on('hit', this.autocorrect.bind(this));
@@ -35,17 +34,13 @@ Ball.prototype.autocorrect = function(truth) {
   _.extend(this, truth);
 }
 
-Ball.prototype.render = function() {
-  this.context.beginPath();
-  this.context.arc(this.x, this.y, radius, 2 * Math.PI, false);
-  this.context.fillStyle = "#000000";
-  this.context.fill();
-};
+Ball.prototype.move = function() {
+  this.x += this.vx;
+  this.y += this.vy;
+}
 
 Ball.prototype.notify = function() {
-  var next = performance.now()
-  if (peer.connection && next - this.last > 100) {
-    this.last = next;
+  if (peer.connection) {
     peer.connection.send({
       type: 'hit',
       data: _.pick(this, ['x','y','vx','vy'])
@@ -53,9 +48,30 @@ Ball.prototype.notify = function() {
   }
 }
 
-Ball.prototype.start = function() {
+Ball.prototype.render = function() {
+  this.context.beginPath();
+  this.context.arc(this.x, this.y, radius, 2 * Math.PI, false);
+  this.context.fillStyle = "#000000";
+  this.context.fill();
+};
+
+Ball.prototype.reset = function() {
+  this.vx = 0;
+  this.vy = 0;
+  this.x  = this.tableWidth  / 2;
+  this.y  = this.tableHeight / 2;
+}
+
+Ball.prototype.start = function(conn) {
+  this.reset();
   var sign = peer.player == 'one' ? 1 : -1;
-  this.vy = sign * vmax;
+  this.vy = sign * vmax
+  conn.on('close', this.stop.bind(this));
+}
+
+Ball.prototype.stop = function() {
+  this.reset();
+  this.vx = this.vy = 0;
 }
 
 Ball.prototype.update = function(paddle1, paddle2) {
@@ -88,11 +104,8 @@ Ball.prototype.update = function(paddle1, paddle2) {
       this.vx *= -1;
       break;
     case scoredPoint:
-      var sign = peer.player == 'one' ? 1 : -1;
-      this.vx = 0;
-      this.vy = sign * vmax;
-      this.x  = this.tableWidth  / 2;
-      this.y  = this.tableHeight / 2;
+      this.reset();
+      this.start();
       break;
     case hitPaddle1:
       bounce(this, paddle1);
@@ -102,8 +115,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
       break;
   }
 
-  this.x += this.vx;
-  this.y += this.vy;
+  this.move();
   if (peer.player === 'one') this.notify()
 };
 
