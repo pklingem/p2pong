@@ -11,6 +11,7 @@ socket.on('error', console.error.bind(console));
 socket.on('peer', connect);
 
 function connect(id) {
+  if (id === peer.id) return;
   console.log('Opponent id:', id);
   peer.player = 'one';
   connected(peer.connect(id))
