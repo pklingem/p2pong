@@ -7,7 +7,7 @@
     "build:js": "browserify client/index.js -o dist/bundle.js",
     "build:html": "jade templates -o dist",
     "watch": "parallelshell 'npm run watch:js' 'npm run watch:html'",
-    "watch:js": "watchify client/index.js -o dist/bundle.js",
+    "watch:js": "watchify client/index.js -v -o dist/bundle.js",
     "watch:html": "jade templates -w -o dist",
     "server:signalling": "node server",
     "server:assets": "http-server dist",

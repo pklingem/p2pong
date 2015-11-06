@@ -9,8 +9,13 @@ var player    = new Player(table.context);
 var computer  = new Computer(table.context);
 var ball      = new Ball(table.context, 200, 300);
 
+var maxLag = 5000;
+var step   = 17;
+
 function Pong() {
   document.body.appendChild(table.canvas);
+  this.lag  = 0;
+  this.last = performance.now();
   animate(this.step.bind(this));
 };
 
@@ -26,8 +31,17 @@ Pong.prototype.render = function(width, height) {
   ball.render();
 };
 
-Pong.prototype.step = function() {
-  this.update();
+Pong.prototype.step = function(next) {
+  this.lag += next - this.last;
+  this.last = next;
+
+  if (this.lag > maxLag) this.lag = maxLag;
+
+  while (this.lag > step) {
+    this.update();
+    this.lag -= step;
+  }
+
   this.render();
   animate(this.step.bind(this));
 };
