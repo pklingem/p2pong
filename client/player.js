@@ -1,3 +1,4 @@
+var p2p    = require('./p2p');
 var Paddle = require('./paddle');
 
 var keys = { left:  37, right: 39 };
