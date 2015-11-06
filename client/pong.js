@@ -1,12 +1,12 @@
 var animate   = require('./animate');
 var Player    = require('./player');
-var Computer  = require('./computer');
+var Opponent  = require('./opponent');
 var Ball      = require('./ball');
 var Table     = require('./table');
 
 var table     = new Table(400, 600);
 var player    = new Player(table.context);
-var computer  = new Computer(table.context);
+var opponent  = new Opponent(table.context);
 var ball      = new Ball(table.context);
 
 var maxLag = 5000;
@@ -21,13 +21,14 @@ function Pong() {
 
 Pong.prototype.update = function() {
   player.update();
-  ball.update(player.paddle, computer.paddle);
+  opponent.update();
+  ball.update(player.paddle, opponent.paddle);
 };
 
 Pong.prototype.render = function(width, height) {
   table.render();
   player.render();
-  computer.render();
+  opponent.render();
   ball.render();
 };
 

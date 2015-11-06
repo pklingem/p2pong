@@ -7,12 +7,10 @@ function Paddle(context, x, y, width, height) {
   this.width = width;
   this.height = height;
   this.vx = 0;
-  this.vy = 0;
 };
 
-Paddle.prototype.move = function(vx, vy) {
+Paddle.prototype.move = function(vx) {
   this.vx = vx;
-  this.vy = vy;
 
   var hitLeftWall  = this.x < 0;
   var hitRightWall = this.x + this.width > this.tableWidth;
@@ -29,7 +27,6 @@ Paddle.prototype.move = function(vx, vy) {
   }
 
   this.x += vx;
-  this.y += vy;
 };
 
 Paddle.prototype.render = function() {
