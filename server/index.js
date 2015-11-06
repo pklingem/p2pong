@@ -12,6 +12,7 @@ io.on('connection', connection);
 app.get('/', redirect);
 app.use(express.static('dist'));
 app.get('/:room', renderGame);
+app.get('/service/oembed', oembed);
 
 server.listen(process.env.PORT || 3030);
 
@@ -35,4 +36,19 @@ function redirect(req, res, next) {
 function renderGame(req, res, next) {
   var options = { root: path.join(__dirname, '../dist') };
   res.sendFile('index.html', options);
+}
+
+function oembed(req, res, next) {
+  res.json({
+    version: "1.0",
+    type: "link",
+    width: 400,
+    height: 600,
+    title: "p2pong",
+    url: req.params.url,
+    author_name: ":sleepypatrick: & :pixelatedscott:",
+    author_url: "http://hackathon.articulate.com",
+    provider_name: "Articulate",
+    provider_url: "http://hackathon.articulate.com"
+  });
 }
