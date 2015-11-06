@@ -23,7 +23,7 @@ function Ball(context) {
   this.vy = 0;
 
   peer.on('connected', this.start.bind(this));
-  peer.on('hit', this.autocorrect.bind(this));
+  peer.on('ball', this.autocorrect.bind(this));
 }
 
 Ball.prototype.autocorrect = function(truth) {
@@ -42,7 +42,7 @@ Ball.prototype.move = function() {
 Ball.prototype.notify = function() {
   if (peer.connection) {
     peer.connection.send({
-      type: 'hit',
+      type: 'ball',
       data: _.pick(this, ['x','y','vx','vy'])
     });
   }
