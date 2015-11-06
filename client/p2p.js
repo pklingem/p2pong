@@ -1,7 +1,12 @@
 var P2P = require('socket.io-p2p');
 var socket = require('socket.io-client')();
 
-var p2p = new P2P(socket);
+var opts = {
+  numClients: 2;
+};
+var p2p = new P2P(socket, opts, function() {
+  console.log('we're speaking WebRTC now');
+});
 
 // this event will be triggered over the socket transport
 // until `usePeerConnection` is set to `true`
