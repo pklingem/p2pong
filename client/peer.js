@@ -12,6 +12,7 @@ socket.on('peer', connect);
 
 function connect(id) {
   console.log('Opponent id:', id);
+  peer.player = 'one';
   connected(peer.connect(id))
 }
 
@@ -26,6 +27,7 @@ function notify(id) {
 
 function connected(conn) {
   peer.connection = conn;
+  if (!peer.player) peer.player = 'two';
   conn.on('data', emit);
   peer.emit('connected', conn);
 }

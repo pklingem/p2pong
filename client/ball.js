@@ -1,3 +1,7 @@
+var _ = require('lodash');
+
+var peer = require('./peer');
+
 var maxTheta = 0.25 * Math.PI;
 var radius   = 5;
 var vmax     = 3;
@@ -16,7 +20,16 @@ function Ball(context) {
   this.x  = this.tableWidth  / 2;
   this.y  = this.tableHeight / 2;
   this.vx = 0;
-  this.vy = vmax;
+  this.vy = 0;
+
+  peer.on('connected', this.start.bind(this));
+  peer.on('hit', this.autocorrect.bind(this));
+}
+
+Ball.prototype.autocorrect = function(truth) {
+  truth.x = this.tableWidth  - truth.x;
+  truth.y = this.tableHeight - truth.y;
+  _.extend(this, truth);
 }
 
 Ball.prototype.render = function() {
@@ -25,6 +38,15 @@ Ball.prototype.render = function() {
   this.context.fillStyle = "#000000";
   this.context.fill();
 };
+
+Ball.prototype.notify = function() {
+  peer.connection.send({ type: 'hit', data: _.pick(this, ['x','y','vx','vy']) });
+}
+
+Ball.prototype.start = function() {
+  var sign = peer.player == 'one' ? 1 : -1;
+  this.vy = sign * vmax;
+}
 
 Ball.prototype.update = function(paddle1, paddle2) {
   var left   = this.x - radius;
@@ -63,6 +85,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
       break;
     case hitPaddle1:
       bounce(this, paddle1);
+      this.notify()
       break;
     case hitPaddle2:
       bounce(this, paddle2);
