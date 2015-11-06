@@ -19,4 +19,9 @@ p2p.on('upgrade', function(data) {
   console.log('upgrade');
 });
 
+p2p.on('peer-error', function(data) {
+  console.log('peer error');
+  console.log(data);
+});
+
 module.exports = p2p;
