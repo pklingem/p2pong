@@ -15,6 +15,7 @@ function Pong() {
 };
 
 Pong.prototype.update = function() {
+  ball.update(player.paddle, computer.paddle);
 };
 
 Pong.prototype.render = function(width, height) {
