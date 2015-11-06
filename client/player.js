@@ -1,21 +1,25 @@
-var p2p    = require('./p2p');
+var peer    = require('./peer');
 var Paddle = require('./paddle');
 
 var keys = { left: 37, right: 39 };
 var keysDown = {};
 var vmax = 4;
 
-window.addEventListener('keydown', keydown);
-window.addEventListener('keyup', keyup);
+peer.on('connected', addControls);
 
-function keydown(event) {
-  keysDown[event.keyCode] = true;
-  p2p.emit('keydown', { keyCode: event.keyCode });
-}
+function addControls(conn) {
+  window.addEventListener('keydown', keydown);
+  window.addEventListener('keyup', keyup);
 
-function keyup(event) {
-  delete keysDown[event.keyCode];
-  p2p.emit('keyup', { keyCode: event.keyCode });
+  function keydown(event) {
+    keysDown[event.keyCode] = true;
+    conn.send({ type: 'keydown', data: { keyCode: event.keyCode } });
+  }
+
+  function keyup(event) {
+    delete keysDown[event.keyCode];
+    conn.send({ type: 'keyup', data: { keyCode: event.keyCode } });
+  }
 }
 
 function Player(context) {

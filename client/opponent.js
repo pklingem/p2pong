@@ -1,12 +1,12 @@
 var Paddle = require('./paddle');
-var p2p    = require('./p2p');
+var peer    = require('./peer');
 
 var keys = { left: 37, right: 39 };
 var keysDown = {};
 var vmax = 4;
 
-p2p.on('keydown', keydown);
-p2p.on('keyup', keyup);
+peer.on('keydown', keydown);
+peer.on('keyup', keyup);
 
 function keydown(event) {
   keysDown[event.keyCode] = true;

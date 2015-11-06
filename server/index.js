@@ -8,13 +8,18 @@ var io = require('socket.io')(server);
 
 io.use(p2p.Server);
 
-io.on('connection', function(socket){
-  socket.on('error', function(err) {
-    console.log(err);
-  });
-  console.log('connection');
-});
+io.on('connection', connection);
 
 app.use(express.static('dist'));
 
 server.listen(process.env.PORT || 3030);
+
+function connection(socket){
+  socket.on('error', console.error);
+  socket.on('peer', peer);
+
+  function peer(id) {
+    console.log('New peer:', id);
+    socket.broadcast.emit('peer', id);
+  }
+}
