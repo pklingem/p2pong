@@ -1,5 +1,13 @@
-var radius = 5;
-var vmax   = 3;
+var maxTheta = 0.25 * Math.PI;
+var radius   = 5;
+var vmax     = 3;
+
+function bounce(ball, paddle) {
+  var dx = ball.x - (paddle.x + paddle.width/2);
+  var theta = maxTheta * 2 * dx / paddle.width;
+  ball.vy = vmax * Math.cos(theta) * -Math.sign(ball.vy);
+  ball.vx = vmax * Math.sin(theta);
+}
 
 function Ball(context) {
   this.context = context;
@@ -54,12 +62,10 @@ Ball.prototype.update = function(paddle1, paddle2) {
       this.y  = this.tableHeight / 2;
       break;
     case hitPaddle1:
-      this.vy = -vmax;
-      this.vx += (paddle1.vx / 2);
+      bounce(this, paddle1);
       break;
     case hitPaddle2:
-      this.vy = vmax;
-      this.vx += (paddle2.vx / 2);
+      bounce(this, paddle2);
       break;
   }
 
