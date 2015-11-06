@@ -9,6 +9,9 @@ var io = require('socket.io')(server);
 io.use(p2p.Server);
 
 io.on('connection', function(socket){
+  socket.on('error', function(err) {
+    console.log(err);
+  });
   console.log('connection');
 });
 
