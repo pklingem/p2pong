@@ -9,6 +9,11 @@ var p2p = new P2P(socket, opts, function() {
   console.log("we're speaking WebRTC now");
 });
 
+p2p.on('ready', function(){
+  console.log('ready');
+  p2p.usePeerConnection = true;
+})
+
 // this event will be triggered over the socket transport
 // until `usePeerConnection` is set to `true`
 p2p.on('peer-msg', function(data) {
