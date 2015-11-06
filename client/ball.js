@@ -21,6 +21,7 @@ function Ball(context) {
   this.y  = this.tableHeight / 2;
   this.vx = 0;
   this.vy = 0;
+  this.last = performance.now();
 
   peer.on('connected', this.start.bind(this));
   peer.on('hit', this.autocorrect.bind(this));
@@ -29,6 +30,8 @@ function Ball(context) {
 Ball.prototype.autocorrect = function(truth) {
   truth.x = this.tableWidth  - truth.x;
   truth.y = this.tableHeight - truth.y;
+  truth.vx *= -1;
+  truth.vy *= -1;
   _.extend(this, truth);
 }
 
@@ -40,7 +43,14 @@ Ball.prototype.render = function() {
 };
 
 Ball.prototype.notify = function() {
-  peer.connection.send({ type: 'hit', data: _.pick(this, ['x','y','vx','vy']) });
+  var next = performance.now()
+  if (peer.connection && next - this.last > 100) {
+    this.last = next;
+    peer.connection.send({
+      type: 'hit',
+      data: _.pick(this, ['x','y','vx','vy'])
+    });
+  }
 }
 
 Ball.prototype.start = function() {
@@ -78,14 +88,14 @@ Ball.prototype.update = function(paddle1, paddle2) {
       this.vx *= -1;
       break;
     case scoredPoint:
+      var sign = peer.player == 'one' ? 1 : -1;
       this.vx = 0;
-      this.vy = vmax;
+      this.vy = sign * vmax;
       this.x  = this.tableWidth  / 2;
       this.y  = this.tableHeight / 2;
       break;
     case hitPaddle1:
       bounce(this, paddle1);
-      this.notify()
       break;
     case hitPaddle2:
       bounce(this, paddle2);
@@ -94,6 +104,7 @@ Ball.prototype.update = function(paddle1, paddle2) {
 
   this.x += this.vx;
   this.y += this.vy;
+  if (peer.player === 'one') this.notify()
 };
 
 module.exports = Ball;
