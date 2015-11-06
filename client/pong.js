@@ -1,29 +1,33 @@
-var animate = require('./animate');
+var animate   = require('./animate');
+var Player    = require('./player');
+var Computer  = require('./computer');
+var Ball      = require('./ball');
+var Table     = require('./table');
 
-var canvas = document.createElement('canvas');
-var width = 400;
-var height = 600;
-canvas.width = width;
-canvas.height = height;
-var context = canvas.getContext('2d');
+var table     = new Table(400, 600);
+var player    = new Player(table.context);
+var computer  = new Computer(table.context);
+var ball      = new Ball(table.context, 200, 300);
 
-var step = function() {
-  update();
-  render();
-  animate(step);
+function Pong() {
+  document.body.appendChild(table.canvas);
+  animate(this.step.bind(this));
 };
 
-var update = function() {
+Pong.prototype.update = function() {
 };
 
-var render = function() {
-  context.fillStyle = '#FF00FF';
-  context.fillRect(0, 0, width, height);
+Pong.prototype.render = function(width, height) {
+  table.render();
+  player.render();
+  computer.render();
+  ball.render();
 };
 
-module.exports = function(opts) {
-  window.onload = function() {
-    document.body.appendChild(canvas);
-    animate(step);
-  };
+Pong.prototype.step = function() {
+  this.update();
+  this.render();
+  animate(this.step.bind(this));
 };
+
+module.exports = Pong;

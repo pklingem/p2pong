@@ -1,3 +1,5 @@
 var Pong = require('./pong');
 
-Pong();
+window.onload = function() {
+  var pong = new Pong();
+};
