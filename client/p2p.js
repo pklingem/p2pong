@@ -2,8 +2,9 @@ var P2P = require('socket.io-p2p');
 var socket = require('socket.io-client')();
 
 var opts = {
-  numClients: 2;
+  numClients: 2
 };
+
 var p2p = new P2P(socket, opts, function() {
   console.log("we're speaking WebRTC now");
 });
