@@ -5,7 +5,7 @@ var opts = {
   numClients: 2;
 };
 var p2p = new P2P(socket, opts, function() {
-  console.log('we're speaking WebRTC now');
+  console.log("we're speaking WebRTC now");
 });
 
 // this event will be triggered over the socket transport
