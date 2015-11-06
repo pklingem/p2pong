@@ -6,7 +6,6 @@ var socket = require('socket.io-client')();
 peer.on('connection', connected);
 peer.on('error', console.error.bind(console));
 peer.on('open', notify);
-peer.on('connected', console.log.bind(console));
 
 socket.on('error', console.error.bind(console));
 socket.on('peer', connect);

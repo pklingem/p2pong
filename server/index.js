@@ -19,7 +19,8 @@ function connection(socket) {
   socket.on('error', console.error);
   socket.on('peer', peer);
 
-  var room = path.basename(socket.handshake.referer);
+  var room = path.basename(socket.handshake.headers.referer);
+  console.log('Room:', room);
   socket.join(room);
 
   function peer(id) {
