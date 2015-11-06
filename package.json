@@ -9,9 +9,9 @@
     "watch": "parallelshell 'npm run watch:js' 'npm run watch:html'",
     "watch:js": "watchify client/index.js -o dist/bundle.js",
     "watch:html": "jade templates -w -o dist",
-    "server:signaling": "node server",
+    "server:signalling": "node server",
     "server:assets": "http-server dist",
-    "server": "parallelshell 'npm run server:signaling' 'npm run server:assets'",
+    "server": "parallelshell 'npm run server:signalling' 'npm run server:assets'",
     "start": "parallelshell 'npm run watch' 'npm run server'"
   },
   "repository": {
