@@ -66,7 +66,7 @@ Ball.prototype.start = function(conn) {
   this.reset();
   var sign = peer.player == 'one' ? 1 : -1;
   this.vy = sign * vmax
-  conn.on('close', this.stop.bind(this));
+  if (conn) conn.on('close', this.stop.bind(this));
 }
 
 Ball.prototype.stop = function() {
